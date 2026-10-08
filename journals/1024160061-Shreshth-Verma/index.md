@@ -1,4 +1,4 @@
-# Vidya’s Journal
+# Shreshth's Journal
 
 Roll No. 1024160061
 Name: Shreshth Verma
