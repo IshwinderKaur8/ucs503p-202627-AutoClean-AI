@@ -1,0 +1,74 @@
+# Week 1: Topic Discussion
+
+| Field | Value |
+|---|---|
+| **Name** | Ishwinder Kaur Ahluwalia |
+| **Roll Number** | 1024160043 |
+| **Period** | 2026-07-27 to 2026-08-01 |
+| **Course** | UCS503 – Software Engineering |
+| **Milestone** | Introduction and Project Topic Exploration |
+
+## Objectives
+
+- Become acquainted with the course instructor and peers.
+- Understand the project selection criteria defined for the course.
+- Explore potential project topics and assess their feasibility against the prescribed criteria.
+
+## Work Done
+
+- Participated in discussions with peers regarding potential project topics.
+- Reviewed and analyzed the course document *Criteria for Project Selection*.
+- Evaluated potential project ideas at a preliminary level based on relevance, feasibility, scalability, availability of existing technologies, and measurability.
+- No project topic was finalized during Week 1.
+- No technical implementation, system design, or development tooling was initiated, as the week was focused on project exploration and selection.
+
+## Project Selection Criteria
+
+The course emphasizes **time-to-value** as a key principle for project selection. The objective is to deliver a usable increment quickly, beginning with an initial two-week sprint and continuing through weekly iterations. Fast feedback and incremental delivery are prioritized over premature perfection.
+
+The following criteria were identified as the primary basis for evaluating project ideas:
+
+| # | Criterion | Requirement |
+|---|---|---|
+| 1 | **Relevance** | The project should address a problem affecting immediate stakeholders and have clear, near-term practical value. |
+| 2 | **Engine Availability** | A mature library, framework, or existing engine should be available for the core solution. The project should focus on software engineering rather than developing fundamentally new algorithms or conducting extensive research. |
+| 3 | **Scalability** | The solution should be capable of supporting a larger audience and should be deployable at scale using available technologies. |
+| 4 | **Measurable Evaluation** | Project success should be evaluated using clear, objective, and preferably attributable metrics. |
+| 5 | **Higher-Order Goal** | Broader goals such as sustainability may be considered, but they should be translated into concrete and measurable engineering objectives. |
+
+### Development and Delivery Considerations
+
+The project should support rapid iteration and feedback. **CI/CD** can facilitate repeated build, test, and deployment cycles, beginning with a lightweight CI setup and expanding the pipeline only where it provides measurable value to the development process.
+
+## Decisions and Rationale
+
+- No project topic was finalized during Week 1.
+- Topic selection was intentionally deferred to allow sufficient exploration and comparison of alternatives.
+- The project selection criteria were adopted as the primary framework for evaluating candidate topics in the following week.
+- The immediate goal for Week 2 is to form a group, shortlist feasible topics, and select a project that satisfies the course requirements.
+
+## Issues and Blockers
+
+- No significant issues or blockers were encountered during Week 1.
+
+## Learnings
+
+- Project selection should be driven by practical value and engineering feasibility, not interest alone.
+- A suitable project should have access to mature technologies and avoid unnecessary research risk.
+- Scalability should be considered from the beginning, even when the initial implementation targets a smaller audience.
+- A measurable evaluation criterion should be established early so that project progress and success can be objectively assessed.
+- Rapid feedback and incremental delivery are important considerations when defining the project scope.
+
+## Next Steps
+
+- Form a group of three members.
+- Generate and shortlist candidate project topics.
+- Evaluate shortlisted topics against the project selection criteria.
+- Define measurable success criteria for the strongest candidates.
+- Finalize the project topic and begin initial planning.
+
+## Contribution
+
+- Actively participated in peer discussions and contributed multiple potential project ideas.
+- Helped evaluate ideas in terms of relevance, scalability, technical feasibility, and suitability for the available timeline.
+- Contributed to the initial understanding and application of the course's project selection criteria.
