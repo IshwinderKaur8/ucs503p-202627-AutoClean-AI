@@ -1,4 +1,4 @@
-﻿![Tiet Logo](../assets/tiet-logo.svg)
+﻿<img src="../assets/tiet-logo.png" alt="TIET Logo" width="100">
 
 **UCS503: Software Engineering (Project)**  
 **TIET Patiala**
@@ -68,54 +68,11 @@ Row-count preservation is enforced by the system, not left to convention. After 
 
 ---
 
-## Preprocessing Pipeline
-
-The orchestrator runs steps in a fixed order and validates the row count after each one.
-
-```mermaid
-flowchart LR
-    A[Upload] --> B[Profile]
-    B --> C[Coerce Types]
-    C --> D[Impute Missing Values]
-    D --> E[Handle Duplicates]
-    E --> F[Handle Outliers]
-    F --> G[Encode Categories]
-    G --> H[Engineer Features]
-    H --> I[Scale Features]
-    I --> J[Audit / Download]
-```
-
-Every transformation follows the same contract and works on a defensive copy of its input:
-
-```
-(dataframe, options) -> (new dataframe, StepReport)
-```
-
----
+<!-- ## Preprocessing Pipeline -->
 
 ## System Architecture
 
 AutoClean AI is a frontend-backend system. The deterministic preprocessing pipeline is independent of any LLM.
-
-```mermaid
-flowchart TB
-    UI["React + TypeScript Frontend<br/>(upload, profile, config, audit, chat)"]
-    API["FastAPI API Layer<br/>(upload, preprocess, combine, synthetic, audit, download, recommend, assistant)"]
-    PIPE["Pipeline Layer<br/>(pandas / scikit-learn modules + orchestrator)"]
-    PROF["Profiling Layer<br/>(semantic column types)"]
-    AUDIT["Audit Layer<br/>(StepReport per step)"]
-    SESS["Session Store<br/>(in-memory datasets)"]
-    ASSIST["Assistant Layer<br/>(rule-based engine, LLM advisor interface)"]
-
-    UI -- "REST / JSON" --> API
-    API --> PIPE
-    API --> SESS
-    API --> ASSIST
-    PIPE --> PROF
-    PIPE --> AUDIT
-    ASSIST --> PROF
-    ASSIST --> AUDIT
-```
 
 | Layer | Responsibility |
 | :--- | :--- |
@@ -186,158 +143,76 @@ Further planned work: richer visualizations (missing values, distributions, outl
 <summary><b>📂 Repository Structure</b> (Click to expand)</summary>
 
 ```text
+
+├── README.md                          # Project overview and architecture entry point
+├── LICENSE
+├── Makefile                           # Build and documentation automation
+├── mkdocs.yml                         # Documentation site configuration
+├── pyproject.toml                     # Python project metadata
 ├── .github/
 │   └── workflows/
-│       └── mkdocs.yml
-├── assets/
-│   ├── icons/
-│   │   └── simple/
-│   │       ├── github.svg
-│   │       ├── googlecolab.svg
-│   │       └── googleslides.svg
-│   ├── stylesheets/
-│   │   └── extra.css
-│   ├── theme-overrides/
-│   │   └── main.html
-│   ├── favicon.png
-│   ├── sample-q1.png
-│   ├── tiet-logo.png
-│   └── tiet-logo.svg
-├── backend/
+│       └── mkdocs.yml                 # CI: build and deploy documentation
+├── assets/                            # Docs site assets (icons, stylesheets, logos)
+├── backend/                           # FastAPI service and preprocessing pipeline
+│   ├── requirements.txt
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── __init__.py
+│   │   ├── main.py                    # Application entry point
+│   │   ├── api/                       # HTTP routes
 │   │   │   ├── routes_assistant.py
 │   │   │   ├── routes_dataset.py
 │   │   │   └── routes_pipeline.py
 │   │   ├── core/
-│   │   │   ├── pipeline/
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── chat_assistant.py
-│   │   │   │   ├── cleaning.py
-│   │   │   │   ├── combine.py
-│   │   │   │   ├── encoding.py
-│   │   │   │   ├── feature_engineering.py
-│   │   │   │   ├── ingestion.py
-│   │   │   │   ├── llm_advisor.py
-│   │   │   │   ├── orchestrator.py
-│   │   │   │   ├── outliers.py
-│   │   │   │   ├── profiling.py
-│   │   │   │   ├── recommender.py
-│   │   │   │   ├── scaling.py
-│   │   │   │   └── synthetic.py
-│   │   │   ├── __init__.py
-│   │   │   └── audit.py
-│   │   ├── schemas/
-│   │   │   ├── __init__.py
+│   │   │   ├── audit.py               # StepReport / audit trail
+│   │   │   └── pipeline/              # Deterministic preprocessing modules
+│   │   │       ├── ingestion.py
+│   │   │       ├── profiling.py
+│   │   │       ├── cleaning.py
+│   │   │       ├── outliers.py
+│   │   │       ├── encoding.py
+│   │   │       ├── feature_engineering.py
+│   │   │       ├── scaling.py
+│   │   │       ├── combine.py
+│   │   │       ├── synthetic.py
+│   │   │       ├── orchestrator.py    # Fixed step order + row-count invariant
+│   │   │       ├── recommender.py     # Rule-based algorithm recommender
+│   │   │       ├── chat_assistant.py  # Keyword-based chat assistant
+│   │   │       └── llm_advisor.py     # AdvisorBackend protocol + HeuristicAdvisor
+│   │   ├── schemas/                   # Request/response models
 │   │   │   ├── assistant.py
 │   │   │   └── pipeline.py
-│   │   ├── services/
-│   │   │   ├── __init__.py
-│   │   │   └── session_store.py
-│   │   ├── __init__.py
-│   │   └── main.py
-│   ├── tests/
-│   │   ├── __init__.py
-│   │   ├── conftest.py
-│   │   ├── test_cleaning.py
-│   │   ├── test_encoding.py
-│   │   ├── test_orchestrator_no_data_loss.py
-│   │   ├── test_outliers.py
-│   │   ├── test_recommender.py
-│   │   └── test_scaling.py
-│   └── requirements.txt
-├── code/
-│   ├── inc/
-│   │   └── Bvr/
-│   │       └── Math/
-│   │           └── math.hpp
-│   ├── src/
-│   │   ├── bin/
-│   │   │   └── run_main.cpp
-│   │   └── lib/
-│   │       └── Bvr/
-│   │           └── Math/
-│   │               └── math.cpp
-│   ├── Makefile
-│   └── run_main.o
-├── docs/
-│   ├── assets/
-│   ├── criteria-for-project-selection.md
-│   ├── index.md
-│   └── journals/
-├── frontend/
-│   ├── public/
-│   │   ├── favicon.svg
-│   │   └── icons.svg
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── client.ts
-│   │   ├── assets/
-│   │   │   ├── hero.png
-│   │   │   ├── react.svg
-│   │   │   └── vite.svg
-│   │   ├── components/
-│   │   │   ├── AlgoCard.tsx
-│   │   │   ├── AnimatedBackground.tsx
-│   │   │   ├── AuditTrailView.tsx
-│   │   │   ├── ChatAssistant.tsx
-│   │   │   ├── ColumnProfileTable.tsx
-│   │   │   ├── DatasetList.tsx
-│   │   │   ├── DownloadResult.tsx
-│   │   │   ├── FileUpload.tsx
-│   │   │   ├── PipelineConfigPanel.tsx
-│   │   │   ├── PreviewTable.tsx
-│   │   │   ├── RecommendationPanel.tsx
-│   │   │   └── ToolsPanel.tsx
-│   │   ├── hooks/
-│   │   │   ├── useTilt.ts
-│   │   │   └── useVoice.ts
-│   │   ├── App.css
-│   │   ├── App.tsx
-│   │   ├── index.css
-│   │   ├── main.tsx
-│   │   └── types.ts
-│   ├── .gitignore
-│   ├── .oxlintrc.json
-│   ├── index.html
-│   ├── package-lock.json
+│   │   └── services/
+│   │       └── session_store.py       # In-memory dataset store
+│   └── tests/                         # pytest suite
+│       ├── conftest.py
+│       ├── test_cleaning.py
+│       ├── test_encoding.py
+│       ├── test_orchestrator_no_data_loss.py
+│       ├── test_outliers.py
+│       ├── test_recommender.py
+│       └── test_scaling.py
+├── frontend/                          # React + TypeScript (Vite) client
 │   ├── package.json
-│   ├── README.md
-│   ├── tsconfig.app.json
-│   ├── tsconfig.json
-│   ├── tsconfig.node.json
-│   └── vite.config.ts
-├── journals/
+│   ├── vite.config.ts
+│   ├── public/
+│   └── src/
+│       ├── App.tsx                    # Application state
+│       ├── main.tsx
+│       ├── types.ts
+│       ├── api/client.ts              # Single point of backend communication
+│       ├── components/                # UI components (upload, profile, audit, chat, ...)
+│       └── hooks/                     # useTilt, useVoice
+├── code/                              # Course-template C++ skeleton (unused by the project)
+├── docs/                              # MkDocs sources
+│   ├── index.md
+│   ├── criteria-for-project-selection.md
+│   └── journals/                      # Linked from ../journals
+├── journals/                          # Weekly engineering logs, one folder per member
 │   ├── 1024160036-Nipun-Mahajan/
-│   │   ├── index.md
-│   │   ├── w1-ticket-resolution.md
-│   │   ├── W1-topic discussion and team formation
-│   │   └── W2-Group formation and topic finalization
 │   ├── 1024160043-Ishwinder-Kaur-Ahluwalia/
-│   │   ├── index.md
-│   │   ├── W1-topic-discussion.md
-│   │   ├── W2-group-formation-and-topic-finalization.md
-│   │   └── W3-elevator-pitch.md
 │   └── 1024160061-Shreshth-Verma/
-│       ├── index.md
-│       ├── w1-ticket-resolution.md
-│       ├── W1-Topic Discussion and Team Formation
-│       └── W2- Group Formation and Topic Finalization
-├── project-proposal/
-│   ├── main.pdf
-│   ├── main.tex
-│   └── main.xdv
-├── project-report-final/
-│   └── TODO
-├── project-report-prototype-stage/
-│   └── TODO
-├── .gitignore
-├── LICENSE
-├── Makefile
-├── mkdocs.yml
-├── pyproject.toml
-└── README.md
+├── project-proposal/                  # Proposal report (LaTeX source and PDF)
+├── project-report-prototype-stage/    # Prototype-stage report (pending)
+└── project-report-final/              # Final report (pending)
 ```
 </details>
 
